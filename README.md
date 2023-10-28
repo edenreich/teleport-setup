@@ -26,7 +26,8 @@ make k8s-up
 
 ### TODO's
 
-- [ ] Expose endpoint for the proxy
+- [ ] Figure out what's the deal with BadConfig helm warning Skipped a TLS block: spec.tls[0].secretName: Required value
+- [ ] Disable authentication
 - [ ] Try out new cluster auto discovery feature
 - [ ] Explore also standalone servers auto discovery feature
   
