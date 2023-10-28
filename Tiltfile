@@ -1,31 +1,49 @@
 k8s_context("k3d-k3s-default")
-load('ext://helm_remote', 'helm_remote')
+load('ext://helm_resource', 'helm_resource', 'helm_repo')
+update_settings(max_parallel_updates=3, k8s_upsert_timeout_secs=300, suppress_unused_image_warnings=None) 
 
-helm_remote('cert-manager',
-    repo_name='jetstack',
-    repo_url='https://charts.jetstack.io',
-    version='v1.13.1',
-    release_name='cert-manager',
+helm_repo(name='jetstack', url='https://charts.jetstack.io', labels='helm-chart-repositories')
+helm_repo(name='ingress-nginx', url='https://kubernetes.github.io/ingress-nginx', labels='helm-chart-repositories')
+helm_repo(name='teleport', url='https://charts.releases.teleport.dev', labels='helm-chart-repositories')
+
+helm_resource('cert-manager',
+    chart='jetstack/cert-manager',
     namespace='cert-manager',
-    create_namespace='true',
-    values=['infra/helm/certmanager/values.yaml']
+    release_name='cert-manager',
+    flags=[
+        '--values', 'infra/helm/certmanager/values.yaml',
+        '--version', 'v1.13.0',
+        '--create-namespace', '--wait'
+    ],
+    labels=['infrastructure']
+)
+local_resource('selfsigned-issuer',
+    cmd='kubectl apply -f infra/helm/certmanager/selfsigned-issuer.yaml',
+    resource_deps=['cert-manager'],
+    labels=['infrastructure']
 )
 
-helm_remote('ingress-nginx',
-    repo_name='ingress-nginx',
-    repo_url='https://kubernetes.github.io/ingress-nginx',
-    version='4.8.3',
-    release_name='ingress-nginx',
+helm_resource('nginx-ingress',
+    chart='ingress-nginx/ingress-nginx',
     namespace='nginx-system',
-    create_namespace='true',
+    release_name='nginx',
+    flags=[
+        '--version', '4.8.3',
+        '--create-namespace', '--wait'
+    ],
+    resource_deps=['cert-manager'],
+    labels=['infrastructure']
 )
 
-helm_remote('teleport-cluster',
-    repo_name='teleport-cluster',
-    repo_url='https://charts.releases.teleport.dev',
-    version='14.1.1',
-    release_name='teleport',
+helm_resource('teleport-cluster',
+    chart='teleport/teleport-cluster',
     namespace='teleport',
-    create_namespace='true',
-    values=['infra/helm/teleport/values.yaml']
+    release_name='teleport-cluster',
+    flags=[
+        '--values', 'infra/helm/teleport/values.yaml',
+        '--version', '14.1.1',
+        '--create-namespace', '--wait'
+    ],
+    resource_deps=['nginx-ingress', 'cert-manager'],
+    labels=['infrastructure']
 )

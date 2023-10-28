@@ -27,6 +27,9 @@ proxy:
       https_keypairs_reload_interval: 12h
       public_addr: custom.example.com:443
       tunnel_public_addr: custom.example.com:3024
+  annotations:
+    ingress:
+      cert-manager.io/cluster-issuer: selfsigned-issuer
 
 podSecurityPolicy:
   enabled: false
@@ -42,6 +45,7 @@ service:
 
 ingress:
   enabled: true
+  suppressAutomaticWildcards: false
   spec:
     ingressClassName: nginx
   name: teleport-ui-ingress
