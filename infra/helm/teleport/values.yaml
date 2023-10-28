@@ -16,6 +16,9 @@ auth:
       # authentication:
       #   locking_mode: best_effort
 
+operator:
+  enabled: true
+
 proxy:
   teleportConfig:
     teleport:
