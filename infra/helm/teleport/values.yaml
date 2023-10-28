@@ -42,7 +42,7 @@ highAvailability:
 service:
   enabled: true
   type: ClusterIP
-  port: 3080
+  port: 443
   targetPort: 3080
 
 publicAddr:
@@ -59,23 +59,6 @@ ingress:
 
 persistence:
   enabled: false
-
-#     rules:
-#       hosts:
-#         - host: teleport.example.com
-#           paths:
-#             - path: /
-#               pathType: Prefix
-#               backend:
-#                 service:
-#                   name: teleport-cluster
-#                   port:
-#                     number: 443
-
-#     tls:
-#       - secretName: teleport-example-com-tls
-#         hosts:
-#           - teleport.example.com
 
 # tls:
 #   enabled: true
