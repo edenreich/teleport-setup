@@ -10,11 +10,11 @@ auth:
         output: stderr
         severity: DEBUG
 
-    auth_service:
-      enabled: true
-      web_idle_timeout: 1h
-      authentication:
-        locking_mode: best_effort
+    # auth_service:
+    #   enabled: false
+    #   web_idle_timeout: 1h
+    #   authentication:
+    #     locking_mode: best_effort
 
 proxy:
   teleportConfig:
@@ -31,6 +31,7 @@ proxy:
   annotations:
     ingress:
       cert-manager.io/cluster-issuer: selfsigned-issuer
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
 podSecurityPolicy:
   enabled: false
@@ -44,23 +45,39 @@ service:
   port: 3080
   targetPort: 3080
 
+publicAddr:
+  - teleport.example.com:443
+
 ingress:
   enabled: true
   spec:
     ingressClassName: nginx
-    rules:
-      hosts:
-        - host: teleport.example.com
-          paths:
-            - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: teleport-cluster
-                  port:
-                    number: 443
+    tls:
+      - hosts:
+          - teleport.example.com
+        secretName: teleport-example-com-tls
 
-  tls:
-    - secretName: teleport-example-com-tls
-      hosts:
-        - teleport.example.com
+persistence:
+  enabled: false
+
+#     rules:
+#       hosts:
+#         - host: teleport.example.com
+#           paths:
+#             - path: /
+#               pathType: Prefix
+#               backend:
+#                 service:
+#                   name: teleport-cluster
+#                   port:
+#                     number: 443
+
+#     tls:
+#       - secretName: teleport-example-com-tls
+#         hosts:
+#           - teleport.example.com
+
+# tls:
+#   enabled: true
+#   existingSecret: teleport-example-com-tls
+#   existingCASecretName: teleport-example-com-tls
