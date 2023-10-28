@@ -25,8 +25,9 @@ proxy:
 
     proxy_service:
       https_keypairs_reload_interval: 12h
-      public_addr: custom.example.com:443
-      tunnel_public_addr: custom.example.com:3024
+      public_addr: teleport.example.com:443
+      tunnel_public_addr: teleport.example.com:3024
+
   annotations:
     ingress:
       cert-manager.io/cluster-issuer: selfsigned-issuer
@@ -41,19 +42,25 @@ service:
   enabled: true
   type: ClusterIP
   port: 3080
-  targetPort: 3080 
+  targetPort: 3080
 
 ingress:
   enabled: true
-  suppressAutomaticWildcards: false
   spec:
     ingressClassName: nginx
-  name: teleport-ui-ingress
-  hosts:
-    - host: teleport.example.com
-      paths:
-        - /
+    rules:
+      hosts:
+        - host: teleport.example.com
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: teleport-cluster
+                  port:
+                    number: 443
+
   tls:
     - secretName: teleport-example-com-tls
       hosts:
-        - teleport.example.com 
+        - teleport.example.com
