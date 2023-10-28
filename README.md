@@ -3,6 +3,7 @@
 - [Teleport Setup](#teleport-setup)
   - [Prerequisites](#prerequisites)
   - [Quick-Start](#quick-start)
+  - [TODO's](#todos)
 
 This is an example for Teleport setup running on Kubernetes.
 
@@ -22,3 +23,10 @@ make k8s-cluster
 ```
 make k8s-up
 ```
+
+### TODO's
+
+- [ ] Expose endpoint for the proxy
+- [ ] Try out new cluster auto discovery feature
+- [ ] Explore also standalone servers auto discovery feature
+  
