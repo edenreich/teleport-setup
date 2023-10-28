@@ -1,9 +1,10 @@
 chartMode: standalone
 clusterName: teleport.example.com
 
+proxyListenerMode: "multiplex"
+
 auth:
   teleportConfig:
-    # put any teleport.yaml auth configuration overrides here
     teleport:
       log:
         output: stderr
@@ -17,7 +18,6 @@ auth:
 
 proxy:
   teleportConfig:
-    # put any teleport.yaml proxy configuration overrides here
     teleport:
       log:
         output: stderr
@@ -25,18 +25,31 @@ proxy:
 
     proxy_service:
       https_keypairs_reload_interval: 12h
-      # optionally override the public addresses for the cluster
       public_addr: custom.example.com:443
       tunnel_public_addr: custom.example.com:3024
 
-# If you are running Kubernetes 1.23 or above, disable PodSecurityPolicies
 podSecurityPolicy:
   enabled: false
 
-# OPTIONAL - when using highly-available storage for both backend AND session recordings
-# you can disable disk persistence and replicate auth pods.
-#
-# persistence:
-#   enabled: false
-# highAvailability:
-#   replicaCount: 2
+highAvailability:
+  replicaCount: 2
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 3080
+  targetPort: 3080 
+
+ingress:
+  enabled: true
+  spec:
+    ingressClassName: nginx
+  name: teleport-ui-ingress
+  hosts:
+    - host: teleport.example.com
+      paths:
+        - /
+  tls:
+    - secretName: teleport-example-com-tls
+      hosts:
+        - teleport.example.com 
