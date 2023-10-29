@@ -1,24 +1,20 @@
 chartMode: standalone
-clusterName: teleport.example.com
+clusterName: teleport-cluster.teleport.svc.cluster.local
 
 proxyListenerMode: "multiplex"
 
-teleport:
-  auth_service:
-    enabled: false
+auth:
+  teleportConfig:
+    teleport:
+      log:
+        output: stderr
+        severity: DEBUG
 
-# auth:
-#   teleportConfig:
-#     teleport:
-#       log:
-#         output: stderr
-#         severity: DEBUG
-
-#     auth_service:
-#       enabled: false
-#       web_idle_timeout: 1h
-#       authentication:
-#         locking_mode: best_effort
+    auth_service:
+      enabled: true
+      web_idle_timeout: 1h
+      authentication:
+        locking_mode: best_effort
 
 operator:
   enabled: true
@@ -45,6 +41,17 @@ podSecurityPolicy:
 
 highAvailability:
   replicaCount: 2
+  requireAntiAffinity: false
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+  certManager:
+    enabled: true
+    addCommonName: false
+    addPublicAddrs: false
+    issuerName: "selfsigned-issuer"
+    issuerKind: ClusterIssuer
+    issuerGroup: cert-manager.io
 
 service:
   enabled: true
@@ -62,12 +69,12 @@ ingress:
     tls:
       - hosts:
           - teleport.example.com
-        secretName: teleport-example-com-tls
+        secretName: teleport-tls
 
 persistence:
-  enabled: false
+  enabled: true
 
-# tls:
-#   enabled: true
-#   existingSecret: teleport-example-com-tls
-#   existingCASecretName: teleport-example-com-tls
+tls:
+  enabled: true
+  existingSecret: teleport-tls
+  existingCASecretName: teleport-tls

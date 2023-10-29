@@ -1,0 +1,11 @@
+---
+apiVersion: resources.teleport.dev/v6
+kind: TeleportRole
+metadata:
+  name: deployer
+  namespace: teleport
+spec:
+  allow:
+    rules:
+      - resources: ['pod', 'deployment', 'service']
+        verbs: ['list','create','read','update','delete']
