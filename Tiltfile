@@ -11,14 +11,14 @@ helm_resource('cert-manager',
     namespace='cert-manager',
     release_name='cert-manager',
     flags=[
-        '--values', 'infra/helm/certmanager/values.yaml',
+        '--values', 'infra/certmanager/helm/values.yaml',
         '--version', 'v1.13.0',
         '--create-namespace', '--wait'
     ],
     labels=['infrastructure']
 )
 local_resource('selfsigned-issuer',
-    cmd='kubectl apply -f infra/helm/certmanager/selfsigned-issuer.yaml',
+    cmd='kubectl apply -f infra/certmanager/selfsigned-issuer.yaml',
     resource_deps=['cert-manager'],
     labels=['infrastructure']
 )
@@ -40,7 +40,7 @@ helm_resource('teleport-cluster',
     namespace='teleport',
     release_name='teleport-cluster',
     flags=[
-        '--values', 'infra/helm/teleport/values.yaml',
+        '--values', 'infra/teleport/helm/values.yaml',
         '--version', '14.1.1',
         '--create-namespace', '--wait'
     ],

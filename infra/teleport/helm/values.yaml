@@ -3,18 +3,22 @@ clusterName: teleport.example.com
 
 proxyListenerMode: "multiplex"
 
-auth:
-  teleportConfig:
-    teleport:
-      log:
-        output: stderr
-        severity: DEBUG
+teleport:
+  auth_service:
+    enabled: false
 
-    auth_service:
-      enabled: false
-      # web_idle_timeout: 1h
-      # authentication:
-      #   locking_mode: best_effort
+# auth:
+#   teleportConfig:
+#     teleport:
+#       log:
+#         output: stderr
+#         severity: DEBUG
+
+#     auth_service:
+#       enabled: false
+#       web_idle_timeout: 1h
+#       authentication:
+#         locking_mode: best_effort
 
 operator:
   enabled: true
