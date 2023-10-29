@@ -78,8 +78,3 @@ ingress:
 
 persistence:
   enabled: true
-
-tls:
-  enabled: true
-  existingSecret: teleport-tls
-  existingCASecretName: teleport-tls
