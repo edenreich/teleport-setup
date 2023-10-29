@@ -6,4 +6,4 @@ metadata:
   name: eden
   namespace: teleport
 spec:
-  roles: ['deployer']
+  roles: ['admin']
