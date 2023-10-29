@@ -6,6 +6,13 @@ operator:
 
 proxyListenerMode: "multiplex"
 
+authentication:
+  type: local # Possible values are 'local' and 'github' for OSS, plus 'oidc' and 'saml' for Enterprise.
+  connectorName: local
+  localAuth: true
+  lockingMode: best_effort
+  secondFactor: "on"
+
 auth:
   teleportConfig:
     teleport:
@@ -14,7 +21,6 @@ auth:
         severity: DEBUG
 
     auth_service:
-      enabled: true
       web_idle_timeout: 1h
       authentication:
         locking_mode: best_effort
