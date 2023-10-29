@@ -6,4 +6,5 @@ metadata:
   namespace: teleport
 spec:
   roles:
-    - admin
+    - access
+    - editor
