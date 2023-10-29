@@ -7,5 +7,13 @@ metadata:
 spec:
   allow:
     rules:
-      - resources: ['pod', 'deployment', 'service']
-        verbs: ['list','create','read','update','delete']
+      - resources:
+          - pod
+          - deployment
+          - service
+        verbs: 
+          - list
+          - create
+          - read
+          - update
+          - delete

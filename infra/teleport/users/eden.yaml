@@ -1,4 +1,3 @@
-
 ---
 apiVersion: resources.teleport.dev/v2
 kind: TeleportUser
@@ -6,4 +5,5 @@ metadata:
   name: eden
   namespace: teleport
 spec:
-  roles: ['admin']
+  roles:
+    - admin
