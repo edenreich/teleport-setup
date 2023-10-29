@@ -1,6 +1,9 @@
 chartMode: standalone
 clusterName: teleport-cluster.teleport.svc.cluster.local
 
+operator:
+  enabled: true
+
 proxyListenerMode: "multiplex"
 
 auth:
@@ -16,9 +19,6 @@ auth:
       authentication:
         locking_mode: best_effort
 
-operator:
-  enabled: true
-
 proxy:
   teleportConfig:
     teleport:
@@ -33,7 +33,6 @@ proxy:
 
   annotations:
     ingress:
-      cert-manager.io/cluster-issuer: selfsigned-issuer
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
 podSecurityPolicy:
